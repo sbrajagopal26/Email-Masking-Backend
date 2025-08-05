@@ -9,7 +9,10 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://email-masking-frontend.vercel.app/'
+}));
+
 app.use(bodyParser.json());
 
 // In-memory storage for demo (use DB like MongoDB in production)
