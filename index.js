@@ -1,5 +1,3 @@
-// Backend for Email Privacy Mask - Node.js (Express + Nodemailer)
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
@@ -27,8 +25,8 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-// Generate Masked Email
-app.post('/api/generate', (req, res) => {
+// === FIXED ROUTE HERE ===
+app.post('/generate-masked-email', (req, res) => {
   const { realEmail, plan } = req.body;
 
   if (!realEmail) return res.status(400).json({ error: 'Real email required.' });
@@ -76,5 +74,9 @@ setInterval(() => {
     }
   }
 }, 60 * 60 * 1000); // Every hour
+
+app.get('/', (req, res) => {
+  res.send('Backend is working!');
+});
 
 app.listen(PORT, () => console.log(`Email Masking Backend running on port ${PORT}`));
