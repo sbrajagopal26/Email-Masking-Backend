@@ -26,21 +26,23 @@ const transporter = nodemailer.createTransport({
 });
 
 // === FIXED ROUTE HERE ===
-app.post('/generate-masked-email', (req, res) => {
+app.post('/api/generate', (req, res) => {
   const { realEmail, plan } = req.body;
-
+  
   if (!realEmail) return res.status(400).json({ error: 'Real email required.' });
-
+  
   const uniqueId = uuidv4().split('-')[0];
   const domain = 'maskmail.io'; // Custom domain
   const maskedEmail = `${uniqueId}@${domain}`;
-
-  const expiresIn = plan === 'premium' ? 7 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000; // Premium: 7 days, Free: 24 hrs
+  
+  const expiresIn = plan === 'premium' ? 7 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000;
+  
   emailMappings[maskedEmail] = {
     realEmail,
     expiresAt: Date.now() + expiresIn
   };
-
+  
+  // Make sure the response matches what frontend expects
   return res.json({ maskedEmail });
 });
 
